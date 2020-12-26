@@ -31,6 +31,21 @@ resource "aws_alb" "ecs-cluster-alb" {
   }
 }
 
+resource "aws_alb_listener" "ecs-alb-https-listener" {
+  load_balancer_arn = "${aws_alb.ecs-cluster-alb.arn}"
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
+  certificate_arn   = "${aws_acm_certificate.ecs-domain-certificate.arn}"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.ecs-default-target-group.arn}"
+  }
+
+  depends_on = [ aws_lb_target_group.ecs-default-target-group ]
+}
+
 resource "aws_lb_target_group" "ecs-default-target-group" {
   name     = "${var.ecs_cluster_nmae}-TG"
   port     = 80
