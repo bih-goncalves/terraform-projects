@@ -68,3 +68,21 @@ resource "aws_route53_record" "ecs-load-balancer-record" {
     zone_id                = "${aws_alb.ecs-cluster-alb.zone_id}"
   }
 }
+
+resource "aws_iam_role" "ecs-cluster-role" {
+  name               = "${var.ecs_cluster_name}-IAM-Role"
+  assume_role_policy = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Effect": "Allow",
+    "Principal": {
+      "Service": ["ecs.amazonaws.com", "ec2.amazonaws.com, "application-autoscaling.amazonaws.com"]
+    },
+    "Action": "sts:AssumeRole"
+  }
+  ]
+}
+EOF
+}
