@@ -20,3 +20,9 @@ resource "aws_route53_record" "ecs-cert-validation-record" {
   ttl     = 60
   allow_overwrite = true
 }
+
+resource "aws_acm_certificate_validation" "ecs-domain-certificate-validation" {
+  certificate_arn = "${aws_acm_certificate.ecs-domain-certificate.arn}"
+  validation_record_fqdns = [ "${aws_route53_record.ecs-cert-validation-record.fqdn}" ]
+}
+
