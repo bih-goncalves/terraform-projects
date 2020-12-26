@@ -31,9 +31,43 @@ Resources
 - 1 ECR repository
 ```
 
-
 ## Infrastructure <a name = "infrastructure"></a>
 
+In this section we defined the VPC, the subnets (3 public and 3 private), the route tables (1 public and 1 private), the internet gateway, the nat gateway and the association between elements.
+
+To work with this module toy have to initialize terraform completing the `infrastructure-prod.config` file with the bucket information.
+
+```
+terraform init -backend-config="infrastructure-prod.config"
+```
+
+Then you define the values for your infrastructure with the `production.tfvars` file. Use `terraform plan` to see what resources will be created.
+
+```
+terraform plan -var-file="production.tfvars" 
+
+# a lot of output and this in the end
+Plan: 20 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + private_subnet_1_id = (known after apply)
+  + private_subnet_2_id = (known after apply)
+  + private_subnet_3_id = (known after apply)
+  + public_subnet_1_id  = (known after apply)
+  + public_subnet_2_id  = (known after apply)
+  + public_subnet_3_id  = (known after apply)
+  + vpc_cidr_block      = "10.0.0.0/16"
+  + vpc_id              = (known after apply)
+```
+
+Pay attention to the outputs that we are asking terraform. If you want more, feel free to add it in `outputs.tf` file.
+
+For the last step, you will apply all changes to create the resources.
+
+```
+terraform apply -var-file="production.tfvars" 
+```
+And you will get real values from the resources created.
 
 ## Platform <a name = "platform"></a>
 
