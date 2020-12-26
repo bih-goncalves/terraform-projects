@@ -20,7 +20,7 @@ resource "aws_ecs_cluster" "production-fargate-cluster" {
   name = "Production-Fargate-Cluster"
 }
 
-resource "aws_elb" "ecs-cluster-elb" {
+resource "aws_alb" "ecs-cluster-alb" {
   name            = "${var.ecs_cluster_name}-ALB"
   internal        = false
   security_groups = [ "${aws_security_group.ecs-alb-security-group.id}" ]
