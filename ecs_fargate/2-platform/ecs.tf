@@ -15,3 +15,13 @@ data "terraform_remote_state" "infrastructure" {
       key    = "${var.remote_state_key}"
   }
 }
+
+resource "aws_ecs_cluster" "production-fargate-cluster" {
+  name = "Production-Fargate-Cluster"
+}
+
+resource "aws_elb" "ecs-cluster-elb" {
+  name     = "${var.ecs_cluster_name}-ALB"
+  internal = false
+}
+
