@@ -107,3 +107,25 @@ resource "aws_security_group" "app-security-group" {
     "Name" = "${var.ecs_service_name}-SG"
   }
 }
+
+resource "aws_alb_target_group" "ecs-app-target-group" {
+  name        = "${var.ecs_service_name}-TG"
+  port        = "${var.docker_container_port}"
+  protocol    = "HTTP"
+  vpc_id      = "${data.terraform_remote_state.platform.outputs.vpc_id}"
+  target_type = "ip"
+
+  health_check {
+    path                = "/actuator/health"
+    protocol            = "HTTP"
+    matcher             = "200"
+    interval            = 60
+    timeout             = 30
+    unhealthy_threshold = "3"
+    healthy_threshold   = "3"
+  }
+
+  tags = {
+    "Name" = "${var.ecs_service_name}-TG"
+  }
+}
