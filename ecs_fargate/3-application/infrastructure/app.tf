@@ -29,3 +29,14 @@ data "template_file" "ecs-task-definition-template" {
     "region"                = "${var.region}"
   }
 }
+
+resource "aws_ecs_task_definition" "springbootapp-task-definition" {
+  container_definitions    = "${data.template_file.ecs-task-definition-template.rendered}"
+  family                   = "${var.ecs_service_name}"
+  cpu                      = 512
+  memory                   = "${var.memory}"
+  requires_compatibilities = [ "FARGATE" ]
+  network_mode             = "awsvpc"
+  execution_role_arn       = ""
+  task_role_arn            = ""
+}
