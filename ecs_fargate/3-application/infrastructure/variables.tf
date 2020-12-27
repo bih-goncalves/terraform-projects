@@ -12,3 +12,4 @@ variable "docker_image_url" {}
 variable "docker_container_port" {}
 variable "memory" {}
 variable "spring_profile" {}
+variable "desired_task_number" {}
