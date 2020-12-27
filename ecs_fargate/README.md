@@ -85,7 +85,7 @@ terraform apply -var-file="production.tfvars"
 
 Pay attention to the outputs that we are asking terraform. If you want more, feel free to add it in `outputs.tf` file.
 
-## Aplication <a name = "aplication"></a>
+## Application <a name = "aplication"></a>
 
 In this stage, we are working with the spring boot application. You don't need to change anything on it, just focus on the Dockerfile and application definitions.
 
