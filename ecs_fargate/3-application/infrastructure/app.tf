@@ -81,3 +81,29 @@ resource "aws_iam_role_policy" "fargate-iam-role-policy" {
 }
 EOF
 }
+
+resource "aws_security_group" "app-security-group" {
+  name = "${var.ecs_service_name}-SG"
+  description = "Security group for springbootapp to comunicate in and out"
+  vpc_id = "${data.terraform_remote_state.platform.outputs.vpc_id}"
+
+  ingress = [ {
+    cidr_blocks = [ "${data.terraform_remote_state.platform.outputs.vpc_cidr_blocks}" ]
+    description = "inboud for aplication"
+    from_port   = 8080
+    protocol    = "TCP"
+    to_port     = 8080
+  } ]
+
+  egress = [ {
+    cidr_blocks = [ "0.0.0.0/0" ]
+    description = "outbound for aplication"
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
+  } ]
+
+  tags = {
+    "Name" = "${var.ecs_service_name}-SG"
+  }
+}
