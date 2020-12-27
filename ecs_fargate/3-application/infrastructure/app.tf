@@ -164,3 +164,7 @@ resource "aws_alb_listener_rule" "ecs-alb-listener-rule" {
     values = ["${lower(var.ecs_service_name)}.${data.terraform_remote_state.platform.ecs_domain_name}"]
   }
 }
+
+resource "aws_cloudwatch_log_group" "springbootapp-log-group" {
+  name = "${var.ecs_service_name}-LogGroup"
+}
