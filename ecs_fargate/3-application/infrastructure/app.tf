@@ -150,3 +150,17 @@ resource "aws_ecs_service" "ecs-service" {
   }
 }
 
+resource "aws_alb_listener_rule" "ecs-alb-listener-rule" {
+  listener_arn = "${data.terraform_remote_state.platform.ecs_alb_listener_arn}"
+  priority = 100
+
+  "action" {
+    type             = "forward"
+    target_group_arn = "${aws_alb_target_group.ecs-app-target-group.arn}"
+  }
+
+  "condition" {
+    field  = "host-header"
+    values = ["${lower(var.ecs_service_name)}.${data.terraform_remote_state.platform.ecs_domain_name}"]
+  }
+}
