@@ -37,8 +37,8 @@ resource "aws_ecs_task_definition" "springbootapp-task-definition" {
   memory                   = "${var.memory}"
   requires_compatibilities = [ "FARGATE" ]
   network_mode             = "awsvpc"
-  execution_role_arn       = ""
-  task_role_arn            = ""
+  execution_role_arn       = "${aws_iam_role.fargate-iam-role.arn}"
+  task_role_arn            = "${aws_iam_role.fargate-iam-role.arn}"
 }
 
 resource "aws_iam_role" "fargate-iam-role" {
