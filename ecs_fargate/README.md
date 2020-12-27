@@ -31,6 +31,8 @@ Resources
 - 1 ECR repository
 ```
 
+Please use TF v.0.11
+
 ## Infrastructure <a name = "infrastructure"></a>
 
 In this section we defined the VPC, the subnets (3 public and 3 private), the route tables (1 public and 1 private), the internet gateway, the nat gateway and the association between elements.
@@ -71,12 +73,51 @@ And you will get real values from the resources created.
 
 ## Platform <a name = "platform"></a>
 
+In this stage we created the security groups, fargate cluster definitions, the load balancer and the cluster domain.
+
+To work with this module toy have to initialize terraform completing the `platform-prod.config` file with the bucket information and have the previous backend also initialized.
+
+```
+terraform init -backend-config="platform-prod.config"
+terraform plan -var-file="production.tfvars" 
+terraform apply -var-file="production.tfvars" 
+```
+
+Pay attention to the outputs that we are asking terraform. If you want more, feel free to add it in `outputs.tf` file.
 
 ## Aplication <a name = "aplication"></a>
 
+In this stage, we are working with the spring boot application. You don't need to change anything on it, just focus on the Dockerfile and application definitions.
+
+To make this easier, we have a shell script that can make any steps like a manual pipeline. After changing the variables for your application and AWS account, you can run any of these commands:
+
+```
+# to create the jar file
+sh deploy.sh build
+
+# to create the ECR image and push to AWS
+sh deploy.sh dockerize
+
+# to create the application's terraform backend
+sh deploy.sh plan
+
+# to deploy the aplication on fargate cluster
+sh deploy.sh deploy
+
+# to clean the environment
+sh deploy.sh destroy
+```
 
 ## Extras <a name = "extras"></a>
 
+Here are some of the next steps for this project:
+
+```
+- Automate de deploy pipeline
+- Automate de build pipeline
+- Sync codecommit or github with build pipeline
+- Change Terraform compatibility with newer version
+```
 
 ## ✍️ Author <a name = "authors"></a>
 
