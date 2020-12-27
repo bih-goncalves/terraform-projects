@@ -47,10 +47,10 @@ resource "aws_alb_listener" "ecs-alb-https-listener" {
 }
 
 resource "aws_lb_target_group" "ecs-default-target-group" {
-  name     = "${var.ecs_cluster_nmae}-TG"
+  name     = "${var.ecs_cluster_name}-TG"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = "${data.terraform_remote_state.infrastructure.vpc_id}"
+  vpc_id   = "${data.terraform_remote_state.infrastructure.outputs.vpc_id}"
 
   tags = {
     "Name" = "${var.ecs_cluster_name}-TG"
@@ -58,7 +58,7 @@ resource "aws_lb_target_group" "ecs-default-target-group" {
 }
 
 resource "aws_route53_record" "ecs-load-balancer-record" {
-  name    = "*.${var.ecs_domain_name}"
+  name    = "*.ecs.${var.ecs_domain_name}"
   type    = "A"
   zone_id = "${data.aws_route53_zone.ecs-domain.zone_id}"
 
@@ -78,7 +78,7 @@ resource "aws_iam_role" "ecs-cluster-role" {
   {
     "Effect": "Allow",
     "Principal": {
-      "Service": ["ecs.amazonaws.com", "ec2.amazonaws.com, "application-autoscaling.amazonaws.com"]
+      "Service": ["ecs.amazonaws.com", "ec2.amazonaws.com", "application-autoscaling.amazonaws.com"]
     },
     "Action": "sts:AssumeRole"
   }
