@@ -86,3 +86,34 @@ resource "aws_iam_role" "ecs-cluster-role" {
 }
 EOF
 }
+
+resource "aws_iam_role_policy" "ecs-cluster-policy" {
+  name   = "${var.ecs_cluster_name}-IAM-Policy"
+  role   = "${aws_iam_role.ecs-cluster-role.id}"
+  policy = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Effect": "Allow",
+    "Action": [
+      "ecs:*",
+      "ec2:*",
+      "elasticloadbalancing:*",
+      "ecr:*",
+      "dynamodb:*",
+      "cloudwatch:*",
+      "s3:*",
+      "rds:*",
+      "sqs:*",
+      "sns:*",
+      "logs:*",
+      "ssm:*",
+      "kafka:*"
+    ],
+    "Resource": "*"
+  }
+  ]
+}
+EOF
+}
