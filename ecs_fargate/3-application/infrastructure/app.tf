@@ -88,7 +88,7 @@ resource "aws_security_group" "app-security-group" {
   vpc_id = "${data.terraform_remote_state.platform.outputs.vpc_id}"
 
   ingress = [ {
-    cidr_blocks = [ "${data.terraform_remote_state.platform.outputs.vpc_cidr_blocks}" ]
+    cidr_blocks = [ "${data.terraform_remote_state.platform.outputs.vpc_cidr_block}" ]
     description = "inboud for aplication"
     from_port   = 8080
     protocol    = "TCP"
